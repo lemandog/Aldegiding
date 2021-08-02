@@ -17,11 +17,10 @@ public class Main {
 static boolean counting = false;
 static ImageIcon alde = new ImageIcon(Objects.requireNonNull(Main.class.getResource("1.png")));
 static Color backg = new Color(45,97,211);
-static double alpha = 0;//degree
+static double alpha = 0; //degree
 static Thread counter; // To avoid multiple threads running at once
 static public DateTimeFormatter sdfF = DateTimeFormatter.ofPattern("HH:mm:ss").withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault()); //format standard
     public static void main(String[] args) {
-
         JFrame main = new JFrame("ALDEGIDING V0.823.17.5a");
         main.setIconImage(alde.getImage());
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
