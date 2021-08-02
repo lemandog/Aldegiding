@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Aldegiding:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Aldegiding_jar</output-path>
+    <root id="archive" name="Aldegiding.jar">
+      <element id="module-output" name="Aldegiding" />
+    </root>
+  </artifact>
+</component>
