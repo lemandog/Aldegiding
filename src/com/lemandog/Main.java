@@ -20,20 +20,29 @@ static Color backg = new Color(45,97,211);
 static double alpha = 0; //degree
 static Thread counter; // To avoid multiple threads running at once
 static public DateTimeFormatter sdfF = DateTimeFormatter.ofPattern("HH:mm:ss").withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault()); //format standard
+static JLabel distanceT;
+static long dist = 0;
     public static void main(String[] args) {
         JFrame main = new JFrame("ALDEGIDING V0.823.17.5a");
         main.setIconImage(alde.getImage());
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLayout(new BorderLayout());
-        main.setSize(400,300);
+        main.setSize(500,300);
+        main.setMinimumSize(new Dimension(500,300));
         JButton start = new JButton("START ALDEGIDING");
         JLabel timeElapsedL = new JLabel("YOU HAVE BEEN ALDEGIDING FOR: 00:00:00", SwingConstants.CENTER);
+        distanceT = new JLabel("DISTANCE TRAVELED: "+ dist, SwingConstants.CENTER);
         timeElapsedL.setOpaque(true); // to set background it should be opaque. Refer to javaDocs. http://java.sun.com/javase/6/docs/api/javax/swing/JComponent.html#setOpaque%28boolean%29
         timeElapsedL.setBackground(backg);
         timeElapsedL.setForeground(Color.WHITE);
+        distanceT.setOpaque(true); // to set background it should be opaque. Refer to javaDocs. http://java.sun.com/javase/6/docs/api/javax/swing/JComponent.html#setOpaque%28boolean%29
+        distanceT.setBackground(backg);
+        distanceT.setForeground(Color.WHITE);
         start.setBackground(backg);
         start.setForeground(Color.WHITE);
-
+        JPanel stats = new JPanel();
+        stats.setOpaque(true);
+        stats.setBackground(backg);
         Aldegida mainAlde = new Aldegida();
         start.addActionListener(e -> {
             counting = !counting;
@@ -55,8 +64,8 @@ static public DateTimeFormatter sdfF = DateTimeFormatter.ofPattern("HH:mm:ss").w
                             timeElapsedL.setText("YOU HAVE BEEN ALDEGIDING FOR: "
                                     + sdfF.format(LocalDateTime.ofEpochSecond(Instant.now().getEpochSecond()
                                     - timeStarted.getEpochSecond(), 0, ZoneOffset.UTC)));
-
-                            Thread.sleep(1000);
+                            distanceT.setText("DISTANCE TRAVELED: "+ dist + " px");
+                            Thread.sleep(200);
                         } catch (InterruptedException ignore) {} // Could be "sleep interrupted" exception. It doesn't matter here.
                     }
 
@@ -67,7 +76,9 @@ static public DateTimeFormatter sdfF = DateTimeFormatter.ofPattern("HH:mm:ss").w
                 mainAlde.timer.stop();
                 start.setText("START ALDEGIDING");
             }});
-        main.add(timeElapsedL,BorderLayout.NORTH);
+        stats.add(timeElapsedL);
+        stats.add(distanceT);
+        main.add(stats,BorderLayout.NORTH);
         main.add(mainAlde,BorderLayout.CENTER);
         main.add(start,BorderLayout.SOUTH);
         main.setVisible(true);
@@ -85,6 +96,7 @@ class Aldegida extends JPanel{
             x += addictiveX;
             y += addictiveY;
             alpha += alphaRot;
+            dist += (long)Math.sqrt(Math.pow(addictiveX,2) + Math.pow(addictiveY,2));
             if (x > getWidth()- alde.getIconWidth() || x < 0) {
                 addictiveX = -addictiveX;
                 alphaRot = -alphaRot;
