@@ -54,7 +54,6 @@ class H2Database {
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             stmt = conn.createStatement();
             stmt.executeUpdate(sql);
-            System.out.println("Inserted " + nick + " " + score + " " + dist);
             stmt.close();
             conn.close();
         } catch (SQLException e) {

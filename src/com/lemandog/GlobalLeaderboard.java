@@ -5,7 +5,6 @@ import java.util.Vector;
 public class GlobalLeaderboard {
 
     public static void post(String sent) {
-        System.out.println("Just sent " + sent);
     }
 
     public static String test() {
