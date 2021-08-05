@@ -18,12 +18,14 @@ static boolean counting = false;
 static ImageIcon alde = new ImageIcon(Objects.requireNonNull(Main.class.getResource("1.png")));
 static Color backg = new Color(45,97,211);
 static double alpha = 0; //degree
+static String nick = System.getProperty("user.name");
 static Thread counter; // To avoid multiple threads running at once
 static public DateTimeFormatter sdfF = DateTimeFormatter.ofPattern("HH:mm:ss").withLocale(Locale.getDefault()).withZone(ZoneId.systemDefault()); //format standard
 static JLabel distanceT;
 static long dist = 0;
     public static void main(String[] args) {
-        JFrame main = new JFrame("ALDEGIDING V0.823.17.5a");
+        H2Database.main();
+        JFrame main = new JFrame("ALDEGIDING V0.823.38.5a");
         main.setIconImage(alde.getImage());
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLayout(new BorderLayout());
@@ -68,7 +70,9 @@ static long dist = 0;
                             Thread.sleep(200);
                         } catch (InterruptedException ignore) {} // Could be "sleep interrupted" exception. It doesn't matter here.
                     }
-
+                    H2Database.setNewScore(LocalDateTime.ofEpochSecond(Instant.now().getEpochSecond()
+                            - timeStarted.getEpochSecond(), 0, ZoneOffset.UTC).toEpochSecond(ZoneOffset.UTC),dist);
+                    dist=0;
                 });
                     counter.start();
             }else{
@@ -76,11 +80,23 @@ static long dist = 0;
                 mainAlde.timer.stop();
                 start.setText("START ALDEGIDING");
             }});
+        JButton leaderboard = new JButton("LEADERBOARDS");
+        leaderboard.addActionListener(e -> H2Database.CreateLeaderboardWin());
+        leaderboard.setOpaque(true);
+        leaderboard.setBackground(backg);
+        leaderboard.setForeground(Color.WHITE);
+
         stats.add(timeElapsedL);
         stats.add(distanceT);
         main.add(stats,BorderLayout.NORTH);
         main.add(mainAlde,BorderLayout.CENTER);
-        main.add(start,BorderLayout.SOUTH);
+        JPanel buttons = new JPanel();
+        buttons.setOpaque(true);
+        buttons.setBackground(backg);
+
+        buttons.add(start);
+        buttons.add(leaderboard);
+        main.add(buttons,BorderLayout.SOUTH);
         main.setVisible(true);
     }
 }
@@ -130,3 +146,5 @@ class Aldegida extends JPanel{
         if(alphaRot>0){alphaRot = 0.5;} else {alphaRot = -0.5;}
     }
 }
+
+
