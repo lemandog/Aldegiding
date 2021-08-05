@@ -5,7 +5,6 @@ import org.h2.jdbc.JdbcSQLNonTransientException;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.*;
-import java.util.NoSuchElementException;
 import java.util.Vector;
 
 import static com.lemandog.Main.nick;
@@ -17,7 +16,6 @@ class H2Database {
     static final String PASS = "";
     static Connection conn = null;
     static Statement stmt = null;
-    static JLabel state = new JLabel("CONNECTION STATE", SwingConstants.CENTER);
     public static void main() {
         try {
             Class.forName(JDBC_DRIVER);
@@ -95,69 +93,45 @@ class H2Database {
             throwables.printStackTrace();
         }
     }
-    public static void setGlobalRecord(Vector<String> record) {
-
-    }
     public static void CreateLeaderboardWin() {
         JFrame leaders = new JFrame("Leaders");
+        leaders.setLocation(500,200);
         leaders.setLayout(new BorderLayout());
-        leaders.setSize(500, 800);
+        leaders.setSize(400, 700);
         JPanel title = new JPanel();
-        JPanel control = new JPanel();
 
-        title.setLayout(new GridLayout(1, 2));
-        JLabel localLeaderT = new JLabel("LOCAL LEADERBOARD");
-        JLabel globalLeaderT = new JLabel("GLOBAL LEADERBOARD");
-        JButton post = new JButton("Post best result");
-        post.addActionListener((event)->{
-            try{
-                GlobalLeaderboard.post(getLocalLeaders().firstElement());
-        }   catch (NoSuchElementException e ){
-                state.setText("There is nothing to send to send");
-            }});
-        JButton resetter = new JButton("Reset records");
-        resetter.addActionListener(e -> {ResetRecords(); main();});
-        JButton connectTest = new JButton("Test connection");
-        connectTest.addActionListener((e -> {state.setText(GlobalLeaderboard.test());}));
-        JButton update = new JButton("Update global leaderboard");
-        update.addActionListener((e -> setGlobalRecord(GlobalLeaderboard.getGlobalLeaders())));
-        control.setLayout(new GridLayout(2,2));
-
-        control.add(post);
-        control.add(resetter);
-        control.add(connectTest);
-        control.add(update);
+        title.setLayout(new GridLayout(1, 1));
+        JLabel localLeaderT = new JLabel("LOCAL LEADERBOARD", SwingConstants.CENTER);
+        localLeaderT.setForeground(Color.WHITE);
+        localLeaderT.setBackground(Color.black);
+        localLeaderT.setOpaque(true);
         title.add(localLeaderT);
-        title.add(globalLeaderT);
-
         leaders.setResizable(false);
         JPanel local = new JPanel();
-        local.setBackground(Color.GRAY);
-        GridLayout main = new GridLayout(10, 1);
+        local.setBackground(Color.black);
+        GridLayout main = new GridLayout(20, 1);
         local.setLayout(main);
         Vector<String> records = getLocalLeaders();
+        JButton resetLeaders = new JButton("RESET LEADERBOARD");
+
+        resetLeaders.setForeground(Color.WHITE);
+        resetLeaders.setBackground(Color.black);
+        resetLeaders.setOpaque(true);
+        resetLeaders.addActionListener(e -> {
+            ResetRecords(); //Delete Table
+            main();         //Create empty table
+        });
         for (int i = 0; i < records.size(); i++) {
-            if (i > 9) {
-                break;
-            }
-            local.add(new JLabel((i + 1) + ") " + records.elementAt(i) + "px", SwingConstants.CENTER), i);
+            if (i > 9) {break;}
+            JLabel exemplar = new JLabel((i + 1) + ") " + records.elementAt(i) + "px", SwingConstants.CENTER);
+            exemplar.setForeground(Color.WHITE);
+            local.add(exemplar, i);
         }
-        JPanel global = new JPanel();
-        global.setBackground(Color.PINK);
-        global.setLayout(main);
-        JPanel scores = new JPanel();
-        scores.setLayout(new GridLayout(1, 2));
-        scores.add(local);
-        scores.add(global);
         JPanel compose = new JPanel();
         compose.setLayout(new GridLayout(2,1));
-        compose.add(control);
-        compose.add(state);
-
         leaders.add(title, BorderLayout.NORTH);
-        leaders.add(scores, BorderLayout.CENTER);
-        leaders.add(compose, BorderLayout.AFTER_LAST_LINE);
-        //compose.setLayout(new SpringLayout());
+        leaders.add(local, BorderLayout.CENTER);
+        leaders.add(resetLeaders, BorderLayout.AFTER_LAST_LINE);
         leaders.setVisible(true);
     }
 }

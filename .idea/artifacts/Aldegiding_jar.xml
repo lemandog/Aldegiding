@@ -1,8 +1,9 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="Aldegiding:jar">
+  <artifact type="jar" name="Aldegiding:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Aldegiding_jar</output-path>
     <root id="archive" name="Aldegiding.jar">
       <element id="module-output" name="Aldegiding" />
+      <element id="extracted-dir" path="O:/CLOUD/OneDrive/Вложения/JavaLibs/h2-1.4.199.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
