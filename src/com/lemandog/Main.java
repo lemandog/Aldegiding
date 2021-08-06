@@ -25,19 +25,19 @@ static JLabel distanceT;
 static long dist = 0;
     public static void main(String[] args) {
         H2Database.main();
-        JFrame main = new JFrame("ALDEGIDING V0.823.38.5a");
+        JFrame main = new JFrame("ALDEGIDING V0.823.38.8a");
         main.setIconImage(alde.getImage());
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLayout(new BorderLayout());
         main.setSize(500,300);
-        main.setMinimumSize(new Dimension(500,300));
+        main.setMinimumSize(new Dimension(main.getSize()));
         JButton start = new JButton("START ALDEGIDING");
         JLabel timeElapsedL = new JLabel("YOU HAVE BEEN ALDEGIDING FOR: 00:00:00", SwingConstants.CENTER);
         distanceT = new JLabel("DISTANCE TRAVELED: "+ dist, SwingConstants.CENTER);
         timeElapsedL.setOpaque(true); // to set background it should be opaque. Refer to javaDocs. http://java.sun.com/javase/6/docs/api/javax/swing/JComponent.html#setOpaque%28boolean%29
         timeElapsedL.setBackground(backg);
         timeElapsedL.setForeground(Color.WHITE);
-        distanceT.setOpaque(true); // to set background it should be opaque. Refer to javaDocs. http://java.sun.com/javase/6/docs/api/javax/swing/JComponent.html#setOpaque%28boolean%29
+        distanceT.setOpaque(true);
         distanceT.setBackground(backg);
         distanceT.setForeground(Color.WHITE);
         start.setBackground(backg);

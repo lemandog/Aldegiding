@@ -33,7 +33,6 @@ class H2Database {
             se.printStackTrace();
         }
         finally {
-            //finally block used to close resources
             try {
                 if (stmt != null) stmt.close();
             } catch (SQLException ignored) {}
@@ -89,12 +88,12 @@ class H2Database {
             stmt.close();
             conn.close();
         }
-        catch (SQLException throwables) {
-            throwables.printStackTrace();
+        catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
     }
     public static void CreateLeaderboardWin() {
-        JFrame leaders = new JFrame("Leaders");
+        JFrame leaders = new JFrame("LEADERBOARD");
         leaders.setLocation(500,200);
         leaders.setLayout(new BorderLayout());
         leaders.setSize(400, 700);
@@ -121,14 +120,11 @@ class H2Database {
             ResetRecords(); //Delete Table
             main();         //Create empty table
         });
-        for (int i = 0; i < records.size(); i++) {
-            if (i > 9) {break;}
+        for (int i = 0; i < records.size() && i < 19; i++) {
             JLabel exemplar = new JLabel((i + 1) + ") " + records.elementAt(i) + "px", SwingConstants.CENTER);
             exemplar.setForeground(Color.WHITE);
             local.add(exemplar, i);
         }
-        JPanel compose = new JPanel();
-        compose.setLayout(new GridLayout(2,1));
         leaders.add(title, BorderLayout.NORTH);
         leaders.add(local, BorderLayout.CENTER);
         leaders.add(resetLeaders, BorderLayout.AFTER_LAST_LINE);
